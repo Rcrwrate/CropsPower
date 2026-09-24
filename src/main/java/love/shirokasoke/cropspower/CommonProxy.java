@@ -12,7 +12,7 @@ public class CommonProxy {
     // GameRegistry." (Remove if not needed)
     public void preInit(FMLPreInitializationEvent event) {
 
-        MyMod.LOG.info(MConfig.greeting);
+        MyMod.LOG.info("禾下乘凉梦，一梦逐一生");
         MyMod.LOG.info("I am Crop's Power at version " + Tags.VERSION);
     }
 

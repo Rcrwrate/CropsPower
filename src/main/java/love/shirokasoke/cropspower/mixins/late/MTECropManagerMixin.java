@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -44,5 +45,30 @@ public class MTECropManagerMixin {
         }
 
         return harvestDrops;
+    }
+
+    /**
+     * Overrides the horizontal working radius of the crop manager with the values from the config.
+     *
+     * @author shirokasoke
+     * @reason Allow the crop manager's working radius to be configured.
+     * @see MTECropManager#getHorizontalRadius(int)
+     */
+    @Overwrite(remap = false)
+    public static int getHorizontalRadius(int tier) {
+        return MixinConfig.cropManagerHorizontalRadiusBase
+            + Math.max(0, MixinConfig.cropManagerHorizontalRadiusPerTier * tier);
+    }
+
+    /**
+     * Overrides the vertical working radius of the crop manager with the value from the config.
+     *
+     * @author shirokasoke
+     * @reason Allow the crop manager's working radius to be configured.
+     * @see MTECropManager#getVerticalRadius()
+     */
+    @Overwrite(remap = false)
+    private int getVerticalRadius() {
+        return MixinConfig.cropManagerVerticalRadius;
     }
 }
