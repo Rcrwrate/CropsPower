@@ -20,3 +20,5 @@ mkdir -p /usr/lib/jvm/jbr25/
 mv jbrsdk_jcef-25.0.2-linux-x64-b300.57/* /usr/lib/jvm/jbr25/
 rm -rf /workspace/jbrsdk_jcef-25.0.2-linux-x64-b300.57/
 rm -rf /workspace/jbrsdk_jcef-25.0.2-linux-x64-b300.57.tar.gz
+
+cp /bin/sync-maven-src/cnb-mirror.gradle /root/.gradle/init.d/cnb-mirror.gradle
