@@ -1,0 +1,18 @@
+$:
+  vscode:
+    - runner:
+        tags: cnb:arch:amd64
+        cpus: 38
+      services:
+        - docker
+      imports:
+        - https://cnb.cool/shirokasoke/keys/-/blob/main/MCWebAPI.yml
+      docker:
+        image: docker.cnb.cool/shirokasoke/mcwebapi:latest
+        volumes:
+          - /workspace/run/server:copy-on-write
+      stages:
+        - name: prepare
+          script: bash prepare.sh
+        - name: vscode go
+          type: vscode:go
