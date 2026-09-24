@@ -13,13 +13,16 @@ import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
 @IFMLLoadingPlugin.MCVersion("1.7.10")
+// 只排除本项目自己的 core 包（ASM 所在处），不要排除整个 mod，被排除的包会完全跳过 LaunchClassLoader 的转换链（含 mixin）
+@IFMLLoadingPlugin.TransformerExclusions("love.shirokasoke.cropspower.core")
 public class EarlyMixinsLoader implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
     public static final Logger LOG = LogManager.getLogger("AP-EarlyMixins");
 
     @Override
     public String[] getASMTransformerClass() {
-        return null;
+        // Patches the crop cache refresh interval CropsNH inlines into the Crop Manager so it can be configured.
+        return new String[] { "love.shirokasoke.cropspower.core.asm.CropManagerCacheRefreshTransformer" };
     }
 
     @Override

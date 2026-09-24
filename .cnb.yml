@@ -1,4 +1,17 @@
+include: 
+  - "https://cnb.cool/shirokasoke/env/-/blob/main/sync.yml"
+
+main:
+  push:
+    sync:
+      imports:
+        - https://cnb.cool/shirokasoke/keys/-/blob/main/CropsPowerSync.yml
+
 $:
+  tag_push:
+    sync:
+      imports:
+        - https://cnb.cool/shirokasoke/keys/-/blob/main/CropsPowerSync.yml
   vscode:
     - runner:
         tags: cnb:arch:amd64
