@@ -18,7 +18,7 @@ import com.gtnewhorizon.gtnhmixins.LateMixin;
 @LateMixin
 public class LateMixinsLoader implements ILateMixinLoader {
 
-    private static final Logger LOG = LogManager.getLogger("AP-LateMixins");
+    private static final Logger LOG = LogManager.getLogger("CP-LateMixins");
 
     @Override
     public String getMixinConfig() {
@@ -38,6 +38,10 @@ public class LateMixinsLoader implements ILateMixinLoader {
         if (loadedMods.contains("cropsnh")) {
             // Adds the crop's seed drop to the drops harvested by the crop manager.
             mixins.add("MTECropManagerMixin");
+        }
+
+        if (!mixins.isEmpty()) {
+            LOG.info("Enabled late mixins: {}", mixins);
         }
 
         return mixins;

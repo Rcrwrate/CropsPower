@@ -17,7 +17,7 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 @IFMLLoadingPlugin.TransformerExclusions("love.shirokasoke.cropspower.core")
 public class EarlyMixinsLoader implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
-    public static final Logger LOG = LogManager.getLogger("AP-EarlyMixins");
+    public static final Logger LOG = LogManager.getLogger("CP-EarlyMixins");
 
     @Override
     public String[] getASMTransformerClass() {
