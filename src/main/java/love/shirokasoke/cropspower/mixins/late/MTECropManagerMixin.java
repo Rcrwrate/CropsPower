@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.gtnewhorizon.cropsnh.api.ICropStickTile;
+import com.gtnewhorizon.cropsnh.api.ISeedData;
 import com.gtnewhorizon.cropsnh.tileentity.singleblock.MTECropManager;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -27,8 +28,10 @@ public class MTECropManagerMixin {
     private final boolean dropSeed = MixinConfig.dropSeed;
 
     /**
-     * Packed block coordinates (see {@link #cropspower$packCoords}) of the crops the
-     * manager must not harvest, currently the four horizontal neighbours of every cross
+     * Packed block coordinates (see {@link #cropspower$packCoords}) of the crops
+     * the
+     * manager must not harvest, currently the four horizontal neighbours of every
+     * cross
      * crop since those are used as the crossbreeding parents.
      */
     @Unique
@@ -38,7 +41,8 @@ public class MTECropManagerMixin {
      * Callback fired right after a crop stick has been registered into the crop
      * manager's crop cache.
      * <p>
-     * A cross crop breeds with the crops in its four horizontal neighbours, so those
+     * A cross crop breeds with the crops in its four horizontal neighbours, so
+     * those
      * coordinates are put on the cross list to keep the manager from harvesting the
      * parents.
      *
@@ -56,7 +60,8 @@ public class MTECropManagerMixin {
         final int x = tileEntity.xCoord;
         final int y = tileEntity.yCoord;
         final int z = tileEntity.zCoord;
-        // block the four horizontal neighbours, harvesting them would break the crossbreeding
+        // block the four horizontal neighbours, harvesting them would break the
+        // crossbreeding
         crosslist.add(cropspower$packCoords(x + 1, y, z));
         crosslist.add(cropspower$packCoords(x - 1, y, z));
         crosslist.add(cropspower$packCoords(x, y, z + 1));
@@ -64,8 +69,10 @@ public class MTECropManagerMixin {
     }
 
     /**
-     * Packs block coordinates into a single long so a position can be stored in a set
-     * without allocating an object for it. Layout: x (26 bits) | y (12 bits) | z (26
+     * Packs block coordinates into a single long so a position can be stored in a
+     * set
+     * without allocating an object for it. Layout: x (26 bits) | y (12 bits) | z
+     * (26
      * bits), the same packing vanilla uses for its BlockPos.
      */
     @Unique
@@ -74,7 +81,8 @@ public class MTECropManagerMixin {
     }
 
     /**
-     * Callback fired right after the crop manager empties its crop cache, so the tracked
+     * Callback fired right after the crop manager empties its crop cache, so the
+     * tracked
      * cross list gets reset alongside it and doesn't keep stale entries.
      *
      * @see MTECropManager#updateCropCache(gregtech.api.interfaces.tileentity.IGregTechTileEntity)
@@ -107,6 +115,11 @@ public class MTECropManagerMixin {
             && crosslist.contains(cropspower$packCoords(te.xCoord, te.yCoord, te.zCoord))) {
             // MyMod.LOG.info("hit crosslist, skiped");
             return null;
+        }
+        ISeedData seedData = crop.getSeed();
+        if (!seedData.getStats()
+            .isAnalyzed()) {
+            seedData.setAnalyzed(true);
         }
         ArrayList<ItemStack> harvestDrops = original.call(crop, dropMultiplier);
         // the machine treats a null drop list as "skip this crop", so keep it null
