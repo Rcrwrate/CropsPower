@@ -8,13 +8,17 @@
 
 1. 扩大自动作物管理机的工作范围（允许自定义水平半径与垂直高度）
 2. 允许自动作物管理机收获种子（原版默认是不会收割到种子的，未免也太坐牢了，不爽？不爽就手搓私货！）
-3. 避免收割正在杂交的作物
-4. 自动显示(等效于使用透镜查看)作物信息，避免出现未知种子
-5. 延迟作物架缓存更新（避免有人设置了超大范围过于影响TPS）
+3. 使用`/cropseed [on|off]`修改附近的作物管理器是否收割种子（配置随坐标走，用于允许种植区不收割种子，杂交区收割种子）
+4. 避免收割正在杂交的作物
+5. 自动显示(等效于使用透镜查看)作物信息，避免出现未知种子
+6. 延迟作物架缓存更新（避免有人设置了超大范围过于影响TPS）
 
 ---
 
 ## 安装
+
+> [!TIP]
+> 推荐仅服务端安装，客户端可以无需安装
 
 [![最新构建(java)](https://img.shields.io/github/actions/workflow/status/Rcrwrate/CropsPower/build-and-test.yml?logo=github&label=Build%20and%20test)](https://github.com/Rcrwrate/CropsPower/actions/workflows/build-and-test.yml)
 [![最新发布](https://img.shields.io/github/v/release/Rcrwrate/CropsPower)](https://github.com/Rcrwrate/CropsPower/releases/latest)
@@ -30,7 +34,7 @@
 | GTNH        | GTNHLib版本 | CropsNH版本 | 最后版本 |
 | ----------- | ----------- | ----------- | -------- |
 | 2.9.0-beta3 | 0.11.37     | 2.0.114     | v0.1     |
-| 2.9.0-beta3 | 0.11.48     | 2.0.114     | v0.3     |
+| 2.9.0-beta3 | 0.11.48     | 2.0.114     | v0.4     |
 
 ## 其他mod
 

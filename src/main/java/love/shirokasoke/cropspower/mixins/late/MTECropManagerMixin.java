@@ -18,14 +18,28 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import love.shirokasoke.cropspower.mixins.MixinConfig;
+import love.shirokasoke.cropspower.server.Coordinates;
+import love.shirokasoke.cropspower.server.DataConfig;
 
 @Mixin(MTECropManager.class)
 public class MTECropManagerMixin {
 
     @Unique
-    private final boolean dropSeed = MixinConfig.dropSeed;
+    private boolean dropSeed = MixinConfig.dropSeed;
+
+    @Unique
+    private boolean changeStatus(Coordinates coord) {
+        if (DataConfig.ons.contains(coord)) {
+            return true;
+        } else if (DataConfig.offs.contains(coord)) {
+            return false;
+        } else {
+            return MixinConfig.dropSeed;
+        }
+    }
 
     /**
      * Packed block coordinates (see {@link #cropspower$packCoords}) of the crops
@@ -81,19 +95,25 @@ public class MTECropManagerMixin {
     }
 
     /**
-     * Callback fired right after the crop manager empties its crop cache, so the
-     * tracked
-     * cross list gets reset alongside it and doesn't keep stale entries.
+     * Callback fired at the start of every crop cache rebuild, resetting the tracked cross list and re-reading the
+     * per-machine seed drop setting from the config.
      *
      * @see MTECropManager#updateCropCache(gregtech.api.interfaces.tileentity.IGregTechTileEntity)
      */
     @Inject(
         method = "updateCropCache(Lgregtech/api/interfaces/tileentity/IGregTechTileEntity;)V",
-        at = @At(value = "INVOKE", target = "Ljava/util/HashSet;clear()V", shift = At.Shift.AFTER),
+        at = @At("HEAD"),
         remap = false,
         require = 1)
-    private void cropspower$resetCrosslist(CallbackInfo ci) {
+    private void cropspower$resetCrosslist(IGregTechTileEntity baseMetaTileEntity, CallbackInfo ci) {
         crosslist.clear();
+        final Coordinates coord = new Coordinates(
+            baseMetaTileEntity.getXCoord(),
+            baseMetaTileEntity.getYCoord(),
+            baseMetaTileEntity.getZCoord(),
+            baseMetaTileEntity.getWorld().provider.dimensionId);
+        this.dropSeed = changeStatus(coord);
+        // MyMod.LOG.info("DropSeed {}: {}", coord.toString(), this.dropSeed);
     }
 
     /**
